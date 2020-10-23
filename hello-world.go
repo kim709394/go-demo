@@ -13,11 +13,11 @@ import (
 
 func main() {
 	//输出hello world
-	fmt.Println("hello world")
-	fmt.Println(hello.Function(1,"b"))
+	fmt.Println("hello1 world")
+	fmt.Println(hello.Function(1, "b"))
 	fmt.Println('b')
-	fmt.Println(hello.GlobalVal,"kk")
-	v1:=1
+	fmt.Println(hello.GlobalVal, "kk")
+	v1 := 1
 
 	fmt.Println(v1)
 	fmt.Printf("%.2f\n", hello.Sdk1())
@@ -29,10 +29,9 @@ func main() {
 	hello.Loop()
 	hello.Array()
 	hello.MapAndCollections()
+	hello.List()
+	hello.Swh()
+	hello.Brek()
+	hello.Contu()
+	fmt.Println(hello.F())
 }
-
-
-
-
-
-
