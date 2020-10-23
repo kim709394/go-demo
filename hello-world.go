@@ -34,4 +34,7 @@ func main() {
 	hello.Brek()
 	hello.Contu()
 	fmt.Println(hello.F())
+	hello.EnableParam()
+	hello.Der()
+	hello.InsStruct()
 }

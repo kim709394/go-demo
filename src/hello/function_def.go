@@ -7,6 +7,8 @@ package hello
 */
 import (
 	"fmt"
+	"os"
+	"sync"
 )
 
 //返回值带有变量名的函数，可以在函数体直接对返回值赋值，然后直接返回
@@ -60,4 +62,78 @@ func FooFunc() {
 		fmt.Println(k, v)
 	})
 
+}
+
+//可变参数
+func EnableParam() {
+	fmt.Println("------------------------可变参数-------------------------")
+	//固定类型的可变参数
+	func(p ...int) {
+		for k, v := range p {
+			fmt.Println(k, v)
+		}
+	}(1, 2, 3)
+
+	//任意类型的可变参数,interface{}代表任意类型，类似java的Object
+	func(params ...interface{}) {
+		for k, v := range params {
+			fmt.Println(k, v)
+		}
+	}(1, "string", "int")
+
+	//用switch判断获取不同的参数类型
+	f := func(params ...interface{}) {
+		for _, v := range params {
+
+			//对值进行类型断言
+			switch v.(type) {
+			case bool:
+				fmt.Println("布尔值")
+			case int:
+				fmt.Println("整型")
+			case string:
+				fmt.Println("字符串")
+			}
+		}
+	}
+	f(1, false, "foo")
+
+	//可变参数传递
+	func(paramList ...interface{}) {
+
+		f(paramList)
+	}(1, 2, 3)
+}
+
+//defer延迟语句,被defer修饰的代码将被延迟执行，最先修饰的最后执行，最后执行的最先修饰
+func Der() {
+
+	fmt.Println("------------------------defer延迟语句-------------------------")
+
+	//类似于java的finally，在整个函数执行完最后才执行
+	fmt.Println("defer begin")
+
+	defer fmt.Println("首先被修饰，最后执行")
+
+	defer fmt.Println("第二个被修饰，倒数第二执行")
+
+	defer fmt.Println("最后被修饰，首先执行")
+
+	fmt.Println("defer end")
+
+	//延迟并发解锁
+	var lock sync.Mutex //初始化互斥线程锁
+	func() {
+		lock.Lock()
+		defer lock.Unlock()
+		fmt.Println("并发操作")
+
+	}()
+
+	//用于文件最后释放资源
+
+	file, err := os.Open("")
+	defer file.Close()
+	fmt.Println(file)
+	fmt.Println(err)
 }
