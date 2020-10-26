@@ -88,7 +88,7 @@ type BlackCat struct {
 func InnerAndOuter() {
 
 	outer := &Outer{}
-	outer.a = 1
+	outer.x = 1
 	outer.b = "1"
 	outer.x = 2
 	outer.y = 3
@@ -101,6 +101,30 @@ func InnerAndOuter() {
 	fmt.Println(outer1.Inner.x)
 	fmt.Println(outer1.Inner)
 	fmt.Println(outer1.x)
+	//初始化内嵌结构体
+	car := &Car{
+		Engine{
+			power: 10,
+			style: "BMW",
+		},
+		Wheel{
+			size: 100,
+		},
+	}
+	fmt.Println(car)
+	//初始化内嵌匿名结构体
+	car0 := Engine{
+		power: 100,
+		style: "BENZ",
+		//初始化内部匿名结构体
+		Start: struct {
+			power int
+		}{
+			power: 20,
+		},
+	}
+	fmt.Println(car0)
+
 }
 
 /*结构内嵌特性
@@ -121,9 +145,26 @@ type Inner struct {
 }
 
 type Outer struct {
-	a   int
+	x   int
 	b   string
 	int //成员变量可以没有名字，此时类型名字即是成员名字,但是不可以有两个同样类型没有名字的成员变量
 	string
 	Inner //内嵌结构体，派生，此时可以继承Inner结构体的全部成员变量
+}
+
+type Wheel struct {
+	size int
+}
+
+type Engine struct {
+	power int
+	style string
+	//类似java的内部类，内部直接定义匿名结构体
+	Start struct {
+		power int
+	}
+}
+type Car struct {
+	Engine
+	Wheel
 }
