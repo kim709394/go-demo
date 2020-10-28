@@ -525,3 +525,19 @@ outerLoop:
 	}
 
 }
+
+//类型断言
+func Assertion() {
+	fmt.Println("------------------------类型断言-------------------------")
+	//判断变量的类型，得先声明一个interface{}变量
+	var ass interface{}
+	ass = 10
+	//判断变量是否是int类型，返回变量的值和一个布尔值，如果类型匹配返回true，否则返回false
+	value, ok := ass.(int)
+	fmt.Println(value, ok)
+	var ass2 interface{}
+	ass2 = "str"
+	value2 := ass2.(string)
+	fmt.Println(value2)
+
+}

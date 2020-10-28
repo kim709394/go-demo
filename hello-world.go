@@ -38,6 +38,8 @@ func main() {
 	hello.EnableParam()
 	hello.Der()
 	hello.InsStruct()
+	hello.Impl()
+	hello.Assertion()
 	time.Sleep(time.Duration(10) * time.Second)
 	fmt.Println("程序结束")
 }
