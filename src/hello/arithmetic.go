@@ -64,3 +64,95 @@ func insertSortByIncr(slice []int, sort bool, incr int) {
 	}
 
 }
+
+//快速排序,递归方式，sort为true则从小到大，反之从大到小
+func QuickSort(slice []int, sort bool) {
+	len := len(slice)
+	if len == 0 || slice == nil {
+		return
+	}
+
+	quickSort(slice, sort, 0, len-1)
+}
+
+func quickSort(slice []int, sort bool, low int, high int) {
+	if low == high {
+		return
+	}
+	var index int
+	if sort {
+		index = getIndexAsc(slice, low, high)
+	} else {
+		index = getIndexDesc(slice, low, high)
+	}
+	if index >= low && index <= high {
+		if index > low {
+			quickSort(slice, sort, low, index-1)
+		}
+		if index < high {
+			quickSort(slice, sort, index+1, high)
+		}
+	}
+
+}
+
+//返回基准数排序后的下标
+func getIndexAsc(slice []int, low int, high int) int {
+	//以第一个数作为基准数
+	tmp := slice[low]
+	//判断从前往后比较还是从后往前比较
+	flag := true
+	for {
+		if low == high {
+			slice[low] = tmp
+			return low
+		}
+		if flag {
+			if slice[high] < tmp {
+				slice[low] = slice[high]
+				low++
+				flag = false
+			} else {
+				high--
+			}
+		} else {
+			if slice[low] < tmp {
+				low++
+			} else {
+				slice[high] = slice[low]
+				high--
+				flag = true
+			}
+		}
+
+	}
+}
+func getIndexDesc(slice []int, low int, high int) int {
+	//以第一个数作为基准数
+	tmp := slice[low]
+	//判断从前往后比较还是从后往前比较
+	flag := true
+	for {
+		if low == high {
+			slice[low] = tmp
+			return low
+		}
+		if flag {
+			if slice[high] > tmp {
+				slice[low] = slice[high]
+				low++
+				flag = false
+			} else {
+				high--
+			}
+		} else {
+			if slice[low] > tmp {
+				low++
+			} else {
+				slice[high] = slice[low]
+				high--
+				flag = true
+			}
+		}
+	}
+}
