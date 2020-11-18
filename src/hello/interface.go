@@ -54,6 +54,7 @@ func (*women) Run() {
 	fmt.Println("跑步")
 }
 
+//接口实现
 func Impl() {
 	f := new(str)
 	var myInter MyInterface
@@ -66,4 +67,19 @@ func Impl() {
 	men.Eat()
 	men.Run()
 
+}
+
+//接口类型转换
+func InterConvert() {
+	var myIn interface{}
+	myIn = new(str)
+	//将对象强制转换为Men接口，将失败
+	p, f1 := myIn.(*MyInterface)
+	fmt.Println(p, f1)
+	//接口强制转换为其实现类***
+	var myIn2 MyInterface
+
+	myIn2 = new(str)
+	s, f2 := myIn2.(*str)
+	fmt.Println(s, f2)
 }
