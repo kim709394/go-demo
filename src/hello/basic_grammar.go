@@ -105,7 +105,7 @@ func boolean() {
 \t：tab 键
 \u 或 \U：Unicode 字符
 \\：反斜杠自身 */
-func Str() {
+func String() {
 	fmt.Println("------------------字符串运算---------------------------")
 	s := "GO语言是世界上最好的编程语言"
 	s2 := "吗"

@@ -24,7 +24,7 @@ func main() {
 	fmt.Printf("%.2f\n", hello.Sdk1())
 	fmt.Printf("%f\n", hello.Sdk1())
 	hello.Complex()
-	hello.Str()
+	hello.String()
 	hello.Float()
 	hello.Ptr()
 	hello.Loop()
