@@ -172,13 +172,15 @@ func constant() {
 
 	//iota常量生成器,iota初始化为0，以下每个常量递增一，周天是0，周一是1，以此类推
 	const (
-		Sunday = iota
-		Monday
-		Tuesday
-		Wednesday
-		Thursday
-		Friday
-		Saturday
+		Sunday    = iota //0
+		Monday           //1
+		Tuesday          //2
+		Wednesday        //3
+		Thursday         //4
+		Friday           //5
+		Saturday         //6
+		_                //"7"  跳过该值
+		Next             //8
 	)
 }
 
@@ -256,19 +258,19 @@ func Loop() {
 //数组与切片
 func Array() {
 	fmt.Println("-----------------数组与切片----------------------------")
-	//初始化数组
-	array := []int{1, 2, 3, 4, 5}
+	//初始化数组，数组必须要有长度，否则就是切片
+	array := [5]int{1, 2, 3, 4, 5}
 	fmt.Println(len(array))
 	fmt.Println(array[0]) //取得第一个元素
 	//多维数组
-	multiArray := [][]int{{1, 2}, {3, 4}} //二维数组
-	multiArray3 := [][][]int{}            //三维数组
+	multiArray := [2][2]int{{1, 2}, {3, 4}} //二维数组
+	multiArray3 := [3][4][5]int{}           //三维数组
 	fmt.Println(multiArray[0][0])
 	fmt.Println(multiArray3)
 	//声明数组
 	var arr [10]int
-	var multiArr [][]int
-	var multiArr1 [][][][][][][][][][][][][][][][][][]string //声明多维数组
+	var multiArr [5][6]int
+	var multiArr1 [1][2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18]string //声明多维数组
 	fmt.Println(arr)
 	fmt.Println(multiArr)
 	fmt.Println(multiArr1)
@@ -283,7 +285,7 @@ func Array() {
 	fmt.Println(slice1)
 	fmt.Println(slice2)
 	fmt.Println(slice3)
-	//切片相当于也是数组，遍历方式和数组一样可以用for range来遍历
+	//切片，遍历方式和数组一样可以用for range来遍历
 	for _, v := range slice1 {
 		fmt.Println(v)
 	}

@@ -137,3 +137,9 @@ func Der() {
 	fmt.Println(file)
 	fmt.Println(err)
 }
+
+//init函数.初始化函数，go文件初始化的时候调用，可以有多个，执行顺序从上往下
+func init() {
+	fmt.Println("初始化function_def的go文件")
+
+}
