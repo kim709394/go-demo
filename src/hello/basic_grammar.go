@@ -141,7 +141,7 @@ func Float() {
 func Ptr() {
 	fmt.Println("----------------指针-----------------------------")
 	v := "go语言"
-	ptr := &v //用&符号表示变量的指针
+	ptr := &v //用&符号表示取变量的指针，也就是内存地址
 	fmt.Println(ptr)
 
 	fmt.Println(*ptr) //用*获取指针指向的地址的变量的值
@@ -153,7 +153,12 @@ func Ptr() {
 	*ptr1 = "go语言学习"
 
 	fmt.Println(*ptr1)
-
+	//指针类型,类型前加*号，**string表示指针类型*string的指针
+	var pt *string
+	p := "java"
+	pt = &p
+	*pt = "rust"
+	fmt.Println(p)
 }
 
 //常量使用
@@ -270,7 +275,7 @@ func Array() {
 	//声明数组
 	var arr [10]int
 	var multiArr [5][6]int
-	var multiArr1 [1][2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18]string //声明多维数组
+	var multiArr1 [1][2][3][4][5][6][7]string //声明多维数组
 	fmt.Println(arr)
 	fmt.Println(multiArr)
 	fmt.Println(multiArr1)
@@ -322,9 +327,9 @@ func Array() {
 }
 
 //map
-func MapAndCollections() {
+func Map() {
 	fmt.Println("------------------------map与集合-------------------------")
-	//声明map,与java的Map类似，键值对，无序，容量会自动扩充，也可以初始指定容量大小
+	//声明map,与java的Map类似，键值对，无序，容量会自动扩充，也可以初始指定容量大小，map是无序的
 	var mapList0 map[string]int
 	mapList0 = map[string]int{"one": 1, "two": 2} //给map赋值
 	mapList1 := map[string]string{"k1": "v1", "k2": "v2", "k3": "v3"}
@@ -340,7 +345,13 @@ func MapAndCollections() {
 	//用切片作为map的值
 	mapList3 := make(map[string][8]int, 10)
 	fmt.Println(mapList3)
-
+	//判断map是否包含某个键
+	k, f := mapList0["k"]
+	if f {
+		fmt.Println("k=", k)
+	} else {
+		fmt.Println("该key值:k不存在")
+	}
 	//用for range遍历map,遍历键值对，注意是无序的，遍历顺序不会是填充顺序
 	for k, v := range mapList1 {
 		fmt.Println(k)
@@ -542,4 +553,16 @@ func Assertion() {
 	value2 := ass2.(string)
 	fmt.Println(value2)
 
+}
+
+//异常捕捉
+func Exception() {
+	//recover捕捉异常
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	//panic函数抛出异常
+	panic("error")
 }
