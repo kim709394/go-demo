@@ -47,7 +47,8 @@ type women struct {
 	girl
 }
 
-func (*girl) Eat() {
+//可以将结构体实例传参进来
+func (g *girl) Eat() {
 	fmt.Println("吃饭")
 }
 
@@ -141,7 +142,7 @@ func Err(err interface{}) error {
 		return error
 	} else {
 		//返回自定义异常
-		return myErr{404, "404异常"}
+		return &myErr{404, "404异常"}
 	}
 
 }
@@ -153,6 +154,6 @@ type myErr struct {
 }
 
 //重写Error方法，实现error接口
-func (e myErr) Error() string {
+func (e *myErr) Error() string {
 	return fmt.Sprint("错误码:", e.ErrorCode, "错误信息:", e.Msg)
 }
