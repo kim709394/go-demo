@@ -45,3 +45,8 @@ func TestMutex(t *testing.T) {
 func TestCPUNum(t *testing.T) {
 	hello.NumCPU()
 }
+
+//互斥读写锁
+func TestRWMutex(t *testing.T) {
+	hello.RWMutex()
+}

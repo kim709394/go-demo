@@ -135,10 +135,37 @@ func RejectLock() {
 func NumCPU() {
 	numCPU := runtime.NumCPU()
 	fmt.Println("逻辑CPU核数：", numCPU)
-	//类似java线程池设置核心池的线程数，设置协程调度器的处理数
+	/*类似java线程池设置核心池的线程数，设置协程调度器的处理数,设置了时候，后面代码执行的多协程将会以这个设置为基础
+	*对分配cpu核数进行多协程的程序计算，多核每核处理单任务则并行，单核处理多任务则并发
+	 */
 	/*<1：不修改任何数值。
 	=1：单核心执行。
 	>1：多核并发执行。*/
 	maxProcs := runtime.GOMAXPROCS(numCPU)
 	fmt.Println("最大调度处理数：", maxProcs)
+}
+
+//读写互斥锁，读锁不会阻塞读操作，会阻塞写操作，写锁会阻塞读和写的操作
+var rwMutex sync.RWMutex
+
+func RWMutex() {
+
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func(read int) {
+			defer wg.Done()
+			if read/2 > 0 {
+				rwMutex.RLock()
+				fmt.Println(counter)
+				rwMutex.RUnlock()
+			} else {
+				rwMutex.Lock()
+				counter++
+				rwMutex.Unlock()
+			}
+		}(i)
+	}
+	wg.Wait()
+	fmt.Println(counter)
+
 }
