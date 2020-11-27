@@ -168,3 +168,8 @@ type Car struct {
 	Engine
 	Wheel
 }
+
+//结构体标签
+type Dolphin struct {
+	name string `key1:"val1 key2:val2"` //标签：为字段添加补充信息
+}

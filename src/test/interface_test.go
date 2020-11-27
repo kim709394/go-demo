@@ -24,5 +24,4 @@ func TestSwitInter(t *testing.T) {
 func TestErr(t *testing.T) {
 	fmt.Println(hello.Err(nil))
 	fmt.Println(hello.Err(1))
-
 }
