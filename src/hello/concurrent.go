@@ -78,6 +78,20 @@ func GoSched() {
 
 }
 
+// runtime.Goexit 终止所在的协程
+func GoExit() {
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		//终止当前协程
+		runtime.Goexit()
+		//这行不会执行
+		fmt.Println("我是子协程")
+	}()
+	wg.Wait()
+
+}
+
 //线程安全函数atomic
 var counter int64
 

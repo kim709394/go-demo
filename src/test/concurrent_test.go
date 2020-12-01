@@ -50,3 +50,8 @@ func TestCPUNum(t *testing.T) {
 func TestRWMutex(t *testing.T) {
 	hello.RWMutex()
 }
+
+//goexit
+func TestGoexit(t *testing.T) {
+	hello.GoExit()
+}
