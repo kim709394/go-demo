@@ -35,3 +35,8 @@ func TestReadFileLine(t *testing.T) {
 func TestCopyFile(t *testing.T) {
 	hello.CopyFile()
 }
+
+//测试获取文件信息
+func TestFileStat(t *testing.T) {
+	hello.FileState()
+}

@@ -43,7 +43,11 @@ func Strs() {
 	strings.LastIndex("123545", "5")
 	//将字符加入一个字符串数组之间，例如：如下输出结果:a|b|c
 	strings.Join([]string{"a", "b", "c"}, "|")
-
+	//字符串拼接
+	str1 := "str1"
+	str2 := "str2"
+	str := str1 + str2
+	fmt.Println(str)
 }
 
 type myJson struct {

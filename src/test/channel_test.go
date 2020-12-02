@@ -40,3 +40,13 @@ func TestCnCh(t *testing.T) {
 func TestSele(t *testing.T) {
 	hello.Sele()
 }
+
+//timer延时函数
+func TestTimer(t *testing.T) {
+	hello.Timer()
+}
+
+//ticker循环延时函数
+func TestTicker(t *testing.T) {
+	hello.Ticker()
+}

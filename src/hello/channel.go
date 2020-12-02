@@ -92,7 +92,7 @@ func OneWayCn() {
 
 }
 
-//关闭通道
+//关闭通道，通道关闭后不能写入数据但是可以读取数据
 func CloseCn() {
 
 	cn := make(chan int)
@@ -147,4 +147,46 @@ func Sele() {
 		}
 	}()
 	<-timer
+}
+
+//定时器timer,延时函数,只写一次，单次延时有效
+func Timer() {
+	//返回一个timer，三秒后往该timer里面的通道写入即时时间
+	timer := time.NewTimer(3 * time.Second)
+	fmt.Println("当前时间:", time.Now())
+	//停止定时器，停止后，定时器将不会生效了，会造成死锁
+	//timer.Stop()
+	t := <-timer.C
+	fmt.Println("timer通道接收到即时时间的时间:", t)
+	//after方法,返回一个通道，3秒往该通道发送时间
+	after := time.After(3 * time.Second)
+	fmt.Println("after延时之前的时间:", time.Now())
+	t2 := <-after
+	fmt.Println("after延时之后的时间:", t2)
+
+	//timer重置
+	fmt.Println("重置前时间:", time.Now())
+	timer2 := time.NewTimer(5 * time.Second)
+	reset := timer2.Reset(1 * time.Second)
+	fmt.Println(reset, "重置后输出时间:", time.Now())
+}
+
+//循环定时器:ticker
+func Ticker() {
+	//每间隔1秒循环往通道发送时间，
+	ticker := time.NewTicker(1 * time.Second)
+	var i int = 0
+	for {
+		<-ticker.C
+		i++
+		if i == 6 {
+			fmt.Println("第六次结束")
+			//重置定时器
+			ticker.Reset(2 * time.Second)
+			//结束定时器
+			ticker.Stop()
+			break
+		}
+	}
+
 }

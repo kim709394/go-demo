@@ -15,3 +15,13 @@ import (
 func TestGet(t *testing.T) {
 	hello.Get()
 }
+
+//测试tcp服务端
+func TestTcpServer(t *testing.T) {
+	hello.TcpServer()
+}
+
+//测试tcp客户端
+func TestTcpCustomer(t *testing.T) {
+	hello.TcpCustomer()
+}

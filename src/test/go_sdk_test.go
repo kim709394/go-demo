@@ -11,6 +11,11 @@ import (
 @date 2020-12-1 8:57
 */
 
+//测试字符串拼接
+func TestStr(t *testing.T) {
+	hello.Strs()
+}
+
 //测试json序列化
 func TestJsonSerialize(t *testing.T) {
 

@@ -117,3 +117,13 @@ func CopyFile() {
 		copy.Write(b[:read])
 	}
 }
+
+//查看文件信息
+func FileState() {
+	stat, err := os.Stat("../file/writ.txt")
+	if err != nil {
+		fmt.Println("file stat err:", err)
+		return
+	}
+	fmt.Println(stat)
+}
