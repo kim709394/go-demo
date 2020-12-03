@@ -398,6 +398,15 @@ func Map() {
 
 }
 
+func DeleteSyncMap() {
+	var syncMap sync.Map
+	syncMap.Store("k1", "v1")
+	syncMap.Store("k2", "v2")
+	fmt.Println(syncMap)
+	syncMap.Delete("k1")
+	fmt.Println(syncMap)
+}
+
 //List列表(集合)
 func List() {
 	fmt.Println("------------------------List列表(集合)-------------------------")
@@ -565,4 +574,15 @@ func Exception() {
 	}()
 	//panic函数抛出异常
 	panic("error")
+}
+
+func Scan() {
+	var scan string
+	fmt.Println("请输入内容:")
+	_, err := fmt.Scanln(&scan)
+	if err != nil {
+		fmt.Println("报错:", err)
+		return
+	}
+	fmt.Println(scan)
 }

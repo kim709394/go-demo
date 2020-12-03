@@ -113,3 +113,13 @@ func TestCurrenTime(t *testing.T) {
 	time.Sleep(time.Duration(10) * time.Second)
 
 }
+
+//测试获取键盘输入信息
+func TestScan(t *testing.T) {
+	hello.Scan()
+}
+
+//测试删除同步map的元素
+func TestSyncMap(t *testing.T) {
+	hello.DeleteSyncMap()
+}

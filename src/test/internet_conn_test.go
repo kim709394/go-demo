@@ -25,3 +25,18 @@ func TestTcpServer(t *testing.T) {
 func TestTcpCustomer(t *testing.T) {
 	hello.TcpCustomer()
 }
+
+//测试tcp文件传输服务端
+func TestTcpFileServer(t *testing.T) {
+	hello.TcpFileServer()
+}
+
+//测试tcp文件传输客户端
+func TestTcpFileCustomer(t *testing.T) {
+	hello.TcpFileCustomer()
+}
+
+//测试tcp聊天室服务端
+func TestTcpChatServer(t *testing.T) {
+	hello.TcpChatServer()
+}
