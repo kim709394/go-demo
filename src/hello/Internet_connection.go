@@ -6,8 +6,10 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 /*
@@ -16,6 +18,7 @@ import (
 @date 2020-11-24 11:15
 */
 
+//http编程
 //get方法服务接口
 func Get() {
 
@@ -24,8 +27,33 @@ func Get() {
 		fmt.Println(writer)
 		writer.Write([]byte("myGoHttp"))
 	})
-	http.ListenAndServe("127.0.0.1:8888", nil)
+	err := http.ListenAndServe("127.0.0.1:8888", nil)
+	if err != nil {
+		fmt.Println("http listen err :", err)
+	}
+}
 
+//http get 请求客户端
+func GetClient() {
+	resp, err := http.Get("http://127.0.0.1:8888/my/go?param=hello")
+	if err != nil {
+		fmt.Println("get client err：", err)
+		return
+	}
+	fmt.Println("resp:", resp)
+	b := make([]byte, 1024*100)
+	var body string
+	for {
+		read, err := resp.Body.Read(b)
+		body += string(b[:read])
+		if err != nil {
+			if err == io.EOF || read == 0 {
+				break
+			}
+			fmt.Println("read err:", err)
+		}
+	}
+	fmt.Println("response body :", body)
 }
 
 //tcp、socket编程,转换大小写
@@ -269,6 +297,82 @@ func TcpChatCustomer(userName string) {
 		fmt.Scan(&scan)
 		//将输入信息发送给聊天服务器
 		dial.Write([]byte(scan))
+	}
+
+}
+
+//ip地址转换
+func IpConvert() {
+
+	s := "192.168.1.174"
+	ip := net.ParseIP(s)
+	fmt.Println(ip)
+}
+
+//udp编程
+//udp服务端
+func UdpServer() {
+	//开启udp监听
+	udp, err := net.ListenUDP("udp", &net.UDPAddr{
+		IP: net.ParseIP("127.0.0.1"), Port: 8000, Zone: "",
+	})
+	if err != nil {
+		fmt.Println("udp server start err:", err)
+	}
+	defer udp.Close()
+	//开启一个协程接收数据
+	var customer *net.UDPAddr
+	go func(conn *net.UDPConn) {
+		b := make([]byte, 1024*100)
+		//死循环阻塞读取客户端发送的数据
+		for {
+			n, addr, err2 := conn.ReadFromUDP(b)
+			if err2 != nil {
+				fmt.Println("客户端IP:", addr.IP.String(), "read err:", err2)
+				continue
+			}
+			if customer == nil {
+				customer = addr
+			}
+
+			fmt.Println("客户端IP:", addr.IP.String(), "发过来的消息:", string(b[:n]))
+		}
+	}(udp)
+
+	//定时每s向客户端发送消息
+	ticker := time.NewTicker(1 * time.Second)
+	for {
+		t := <-ticker.C
+		if customer != nil {
+			_, err3 := udp.WriteToUDP([]byte("发送给客户端:"+strconv.Itoa(t.Second())), customer)
+			if err3 != nil {
+				fmt.Println("writ err :", err3)
+				continue
+			}
+		}
+	}
+}
+
+//udp客户端
+func UdpCustomer() {
+	//连接服务端
+	udp, err := net.DialUDP("udp", nil, &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: 8000, Zone: ""})
+	defer udp.Close()
+	if err != nil {
+		fmt.Println("customer connection err:", err)
+		return
+	}
+
+	//给服务器发送消息
+	udp.Write([]byte("客户端发送的消息"))
+	//循环接收服务端的消息
+	b := make([]byte, 1024*100)
+	for {
+		n, addr, err1 := udp.ReadFromUDP(b)
+		if err1 != nil {
+			fmt.Println("read err:", err1)
+		}
+		fmt.Println("收到服务端:"+addr.IP.String()+":"+"消息:", string(b[:n]))
 	}
 
 }

@@ -1,7 +1,9 @@
 package test
 
 import (
+	"fmt"
 	"hello"
+	"net"
 	"testing"
 )
 
@@ -14,6 +16,11 @@ import (
 //测试get服务接口
 func TestGet(t *testing.T) {
 	hello.Get()
+}
+
+//测试get http客户端
+func TestGetClient(t *testing.T) {
+	hello.GetClient()
 }
 
 //测试tcp服务端
@@ -39,4 +46,21 @@ func TestTcpFileCustomer(t *testing.T) {
 //测试tcp聊天室服务端
 func TestTcpChatServer(t *testing.T) {
 	hello.TcpChatServer()
+}
+
+//测试转换ip
+func TestIpConvert(t *testing.T) {
+	hello.IpConvert()
+	var a *net.UDPAddr
+	fmt.Println(a)
+}
+
+//测试udp服务端
+func TestUdpServer(t *testing.T) {
+	hello.UdpServer()
+}
+
+//测试udp客户端
+func TestUdpCustomer(t *testing.T) {
+	hello.UdpCustomer()
 }
