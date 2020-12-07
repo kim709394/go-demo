@@ -1,8 +1,8 @@
-package test
+package hello
 
 import (
 	"fmt"
-	"go-demo/hello"
+	"github.com/kim709394/go-demo/hello"
 	"net"
 	"testing"
 )

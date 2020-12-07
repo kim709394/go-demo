@@ -1,6 +1,6 @@
 package main
 
-import "go-demo/hello"
+import "github.com/kim709394/go-demo/hello"
 
 /*
 @Author kim

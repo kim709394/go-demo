@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-demo/hello"
+	"github.com/kim709394/go-demo/hello"
 )
 
 /*
