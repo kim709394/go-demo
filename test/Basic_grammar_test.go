@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"hello"
+	"go-demo/hello"
 	"testing"
 	"time"
 )

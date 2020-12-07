@@ -1,7 +1,7 @@
 package test
 
 import (
-	"hello"
+	"go-demo/hello"
 	"testing"
 )
 
