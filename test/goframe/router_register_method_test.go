@@ -273,10 +273,11 @@ func TestGroupRouter(t *testing.T) {
 	s := g.Server()
 	//路由前缀
 	group := s.Group("/user")
+	gr := new(GroupRouter)
+
 	/*参数一：路由url，参数二：控制器对象，参数三：控制器对象里面的方法名。
 	  绑定对应的路由url和方法作为暴露出去的服务
 	*/
-	gr := new(GroupRouter)
 	group.ALL("/list", gr, "List")
 	group.GET("/getUser", gr, "GetUser")
 	group.POST("/addUser", gr, "AddUser")
