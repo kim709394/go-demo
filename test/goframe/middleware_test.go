@@ -39,7 +39,12 @@ func AuthMiddleware(r *ghttp.Request) {
 	for _, uri := range anon {
 		if uri == r.RequestURI {
 			r.Middleware.Next()
-			return
+			/*
+				Exit: 仅退出当前执行的逻辑方法，不退出后续的请求流程，可用于替代return。
+				ExitAll: 强行中断当前执行流程，当前执行方法的后续逻辑以及后续所有的逻辑方法将不再执行，常用于权限控制
+			*/
+			//return
+			r.Exit()
 		}
 	}
 	//进行token鉴权
