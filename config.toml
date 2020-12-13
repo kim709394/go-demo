@@ -1,0 +1,8 @@
+#服务配置
+[server]
+    "Address"=":81"
+    "ServerRoot"="D:\\go\\goworks\\go-demo\\goframe\\static"
+    #配置服务实例，服务实例没找到的配置项回去服务配置找
+    [server.server1]
+        "Address"=":82"
+        "ServerRoot"="D:\\go\\goworks\\go-demo\\goframe\\static"

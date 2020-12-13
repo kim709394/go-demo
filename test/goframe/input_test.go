@@ -1,6 +1,7 @@
 package goframe
 
 import (
+	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gvalid"
@@ -93,6 +94,52 @@ func TestCustmer(t *testing.T) {
 		ctx := r.GetCtxVar("ctx")
 		context := r.GetCtx()
 		r.Response.WriteExit(customer, ctx, context.Value("ctx"))
+	})
+	s.SetPort(8081)
+	s.Run()
+
+}
+
+//文件上传
+//单文件上传
+func TestFileUpload(t *testing.T) {
+	s := g.Server()
+	s.BindHandler("/upload", func(r *ghttp.Request) {
+		file := r.GetUploadFile("file")
+		file.Save("../../file/")
+		f, err := file.Open()
+		defer f.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+		b := make([]byte, 1024*1024)
+		f.Read(b)
+		fmt.Println(b)
+	})
+	s.SetPort(8081)
+	s.Run()
+}
+
+//多文件上传
+func TestMultiFilesUpload(t *testing.T) {
+	s := g.Server()
+	s.BindHandler("/upload", func(r *ghttp.Request) {
+		files := r.GetUploadFiles("file")
+		files.Save("../../file/")
+		for _, file := range files {
+			f, err := file.Open()
+			defer f.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
+			b := make([]byte, 1024*1024)
+			n, err := f.Read(b)
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Println(len(b[:n]))
+		}
+
 	})
 	s.SetPort(8081)
 	s.Run()

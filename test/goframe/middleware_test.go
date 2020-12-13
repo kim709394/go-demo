@@ -3,7 +3,6 @@ package goframe
 import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"net/http"
 	"testing"
 )
 
@@ -28,6 +27,15 @@ func AfterMiddleware(r *ghttp.Request) {
 //跨域中间件
 func MiddlewareCors(r *ghttp.Request) {
 	r.Response.CORSDefault()
+	/*
+		 个性化设置
+		//设置允许的请求域名
+		corsOptions := r.Response.DefaultCORSOptions()
+		corsOptions.AllowDomain = []string{"www.baidu.com", "www.jd.com"}
+		r.Response.CORS(corsOptions)
+		r.Middleware.Next()
+
+	*/
 	r.Middleware.Next()
 }
 
@@ -66,11 +74,14 @@ func GlobalError(r *ghttp.Request) {
 	r.Middleware.Next()
 	//获取错误信息
 	err := r.GetError()
-
-	if r.Response.Status >= http.StatusInternalServerError {
+	if err != nil {
 		r.Response.ClearBuffer()
 		r.Response.WriteJson(ResultVO{5001, "服务端错误", err.Error()})
 	}
+	/*if r.Response.Status >= http.StatusInternalServerError {
+		r.Response.ClearBuffer()
+		r.Response.WriteJson(ResultVO{5001, "服务端错误", err.Error()})
+	}*/
 
 }
 
@@ -78,6 +89,7 @@ func GlobalError(r *ghttp.Request) {
 func TestGroupMiddleware(t *testing.T) {
 	/*
 		全局中间件
+		全局中间件仅对动态请求拦截有效，无法拦截静态文件请求。
 		由于全局中间件也是通过路由规则执行，那么也会存在执行优先级：
 		首先，由于全局中间件是基于模糊路由匹配，因此当同一个路由匹配到多个中间件时，会按照路由的深度优先规则执行，具体请查看路由章节；
 		其次，同一个路由规则下，会按照中间件的注册先后顺序执行，中间件的注册方法也支持同时按照先后顺序注册多个中间件；
