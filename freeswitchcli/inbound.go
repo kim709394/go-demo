@@ -48,7 +48,7 @@ func ExecuteCommand() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	client.Api("sofia status profile internal reg")
+	client.Api("reloadxml")
 	Receive(client)
 }
 
