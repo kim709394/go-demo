@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/encoding/gxml"
 	"github.com/gogf/gf/os/gfile"
+	"github.com/gogf/gf/os/glog"
 	"testing"
 )
 
@@ -42,4 +43,8 @@ func TestUpdateXml(t *testing.T) {
 		fmt.Println("xml输出异常:", err)
 	}
 	fmt.Println(string(encode))
+	err2 := gfile.PutBytes("../../file/default.xml", encode)
+	if err2 != nil {
+		glog.Info("输出xml文件报错:", err2)
+	}
 }

@@ -17,7 +17,6 @@ func TestNullInter(t *testing.T) {
 func TestSwitInter(t *testing.T) {
 	var a hello.MyInterface
 	a = new(hello.Str)
-
 	hello.SwitInter(a)
 }
 

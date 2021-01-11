@@ -2,7 +2,14 @@
 [server]
     "Address"=":81"
     "ServerRoot"="D:\\go\\goworks\\go-demo\\goframe\\static"
+    LogStdout= true               # 日志是否输出到终端。默认为true
+    ErrorStack= true               # 当Server捕获到异常时是否记录堆栈信息到日志中。默认为true
+    ErrorLogEnabled= true               # 是否记录异常日志信息到日志中。默认为true
     #配置服务实例，服务实例没找到的配置项回去服务配置找
     [server.server1]
         "Address"=":82"
         "ServerRoot"="D:\\go\\goworks\\go-demo\\goframe\\static"
+
+[database]
+    link = "mysql:root:root@tcp(127.0.0.1:3306)/voip"
+    debug = true    #开启调试模式，在日志中打印sql语句
