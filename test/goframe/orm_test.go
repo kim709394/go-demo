@@ -133,7 +133,7 @@ func TestDBModel(t *testing.T) {
 	fmt.Println(res)
 
 	//model默认是链式不安全的,连续调用where则是并列关系，where id in (1,2) and create_time >= now()
-	model.Where("create_time >= ?", gtime.Now()).All()
+	model.Where("created_at >= ?", gtime.Now()).All()
 	//clone()方法创建一个新的model对象出来，保留原model对象的所有特性，与原model对象不关联
 	clone := model.Clone()
 	fmt.Println(clone)
@@ -150,21 +150,23 @@ func TestDBModel(t *testing.T) {
 
 //实体，字段名和数据库的键名默认是驼峰匹配下划线规则,首字母大写是为了公开访问权限，不影响与数据库键名的首字母小写匹配
 type Phone struct {
-	Id         int64       //主键
-	IpAddress  string      //ip地址
-	Name       string      //名字
-	PhoneNum   string      //电话号码
-	Password   string      //密码
-	CreateTime *gtime.Time //时间
-	Del        int         //逻辑删除标识符
-	GId        int64       //组id
+	Id        int64       //主键
+	IpAddress string      //ip地址
+	Name      string      //名字
+	PhoneNum  string      //电话号码
+	Password  string      //密码
+	CreatedAt *gtime.Time //时间
+	DeletedAt *gtime.Time //删除时间
+	UpdatedAt *gtime.Time //修改时间
+	GId       int64       //组id
 }
 
 type Group struct {
-	Id         int64       //主键
-	Name       string      //名字
-	Del        int         //是否删除
-	CreateTime *gtime.Time //时间
+	Id        int64       //主键
+	Name      string      //名字
+	CreatedAt *gtime.Time //时间
+	DeletedAt *gtime.Time //删除时间
+	UpdatedAt *gtime.Time //修改时间
 }
 
 //插入操作
@@ -175,7 +177,7 @@ func TestInsert(t *testing.T) {
 	Save()方法：使用INSERT INTO语句进行数据库写入，如果写入的数据中存在主键或者唯一索引时，更新原有数据，否则写入一条新数据；*/
 	//使用Data()方法，参数为Map
 	res, err := g.DB().Model("t_phone").Data(g.Map{"ip_address": "127.0.0.1", "name": "话机1", "phone_num": "110",
-		"password": "123456", "create_time": gtime.Now(), "del": 0, "g_id": 1}).Insert()
+		"password": "123456", "created_at": gtime.Now(), "deleted_at": 0, "g_id": 1}).Insert()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -185,7 +187,7 @@ func TestInsert(t *testing.T) {
 	phone := new(Phone)
 	phone.Name = "话机11"
 	phone.Id = 1
-	phone.CreateTime = gtime.Now()
+	phone.CreatedAt = gtime.Now()
 	phone.IpAddress = "localhost"
 	phone.GId = 1
 	phone.Password = "123456"
@@ -200,32 +202,32 @@ func TestInsert(t *testing.T) {
 
 	//RawSQL嵌入,生成的sql语句不会转化成字符串，只会原班不动执行：gdb.Raw("now()")   now()不会变成'now()'
 	g.DB().Model("t_phone").Data(g.Map{"ip_address": "127.0.0.1", "name": "话机1", "phone_num": "110",
-		"password": "123456", "create_time": gdb.Raw("now()"), "del": 0, "g_id": 1}).Insert()
+		"password": "123456", "created_at": gdb.Raw("now()"), "deleted_at": 0, "g_id": 1}).Insert()
 }
 
 //修改方法
 func TestUpdate(t *testing.T) {
 	//个性化修改
-	g.DB().Model("t_phone").Data(g.Map{"name": "709394"}).Where("id=?", 1).Update()
+	//g.DB().Model("t_phone").Data(g.Map{"name": "709394"}).Where("id=?", 1).Update()
 	phone := new(Phone)
 	phone.Name = "话机11111"
 	phone.Id = 2
-	phone.CreateTime = gtime.Now()
+	phone.CreatedAt = gtime.Now()
 	phone.IpAddress = "localhost"
 	phone.GId = 1
 	phone.Password = "123456"
 	phone.PhoneNum = "10000"
-	//主键存在的情况下进行修改，空值无法忽略，此时结构体的每个属性必须有值或者该字段必须有默认值
+	//主键存在的情况下进行修改，如果数据库字段约束设置了not null的话，空值无法忽略，此时结构体的每个属性必须有值或者该字段必须有默认值
 	g.DB().Model("t_phone").OmitEmpty().Save(phone)
 
-	g.DB().Model("t_group").Insert(g.Map{"name": "井下", "del": 1, "create_time": gdb.Raw("now()")})
+	g.DB().Model("t_group").Insert(g.Map{"name": "井下", "deleted_at": gtime.Now(), "created_at": gdb.Raw("now()")})
 	//Counter对象用法，用于给字段修改为自增
 	counter := &gdb.Counter{
-		Field: "del",
+		Field: "id",
 		Value: 1,
 	}
 	// update t_group set del=del+1 where id=1
-	g.DB().Model("t_group").Data(g.Map{"del": counter}).Where("id=?", 1).Update()
+	g.DB().Model("t_group").Data(g.Map{"id": counter}).Where("id=?", 1).Update()
 }
 
 //删除
@@ -241,8 +243,8 @@ func TestQuery(t *testing.T) {
 	all, err := g.DB().Model("t_phone").
 		Where("id=?", 1).
 		And("name like ?", "%井%").
-		Or("del =?", 0).
-		Or("del in (?)", g.Slice{2}).All()
+		Or("id =?", 0).
+		Or("phone_num in (?)", g.Slice{2}).All()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -270,6 +272,12 @@ func TestQuery(t *testing.T) {
 	//Value():返回一个字段值
 	g.DB().Model("t_group").Value("id", "id=?", 1)
 	g.DB().Model("t_group").Value("id", "id in (?)", g.Slice{1, 2})
+	//Fields():需要查询的字段,select sum(id) from t_group where id=1
+	g.DB().Model("t_group").Fields("sum(id)").WherePri(1).Value()
+	//select distinct id,name from t_group where id=1
+	g.DB().Model("t_group").Fields("distinct id,name").WherePri(1).All()
+	//FieldsEx():排除查询的字段，select del,name from t_group where id=1
+	g.DB().Model("t_group").FieldsEx("id", "created_at").WherePri(1).One()
 	//count(),返回总记录数
 	g.DB().Model("t_group").WherePri(1).Count()
 
@@ -282,9 +290,139 @@ func TestQuery(t *testing.T) {
 	g.DB().Model("t_group").WherePri(1).Struct(group)
 	//Structs()：返回一个对象数组
 	groups := ([]*Group)(nil)
-	g.DB().Model("t_group").Structs(&groups)
+	g.DB().Model("t_group").Where("id between ? and ?", 0, 1).Structs(&groups)
+	//Scan()方法,自动识别调用struct()还是structs()方法，如果返回的结果集是数组则调用structs()方法，如果是单条记录则返回struct()方法。
+	g.DB().Model("t_group").Scan(&group)
 	/*Find*支持主键条件的数据查询
 	Find*方法包含：FindAll/FindOne/FineValue/FindCount/FindScan，
 	这些方法与All/One/Value/Count/Scan方法的区别在于，当方法直接给定条件参数时，
 	前者的效果与WherePri方法一致；而后者的效果与Where方法一致。也就是说Find*方法的条件参数支持智能主键识别特性。*/
+
+	//group by
+	g.DB().Model("t_phone").Fields("count(1) total,name").Group("name").All()
+	//order by
+	g.DB().Model("t_phone").Order("id desc,del asc").All()
+	//having
+	g.DB().Model("t_phone").Fields("count(1) total,phone_num").Group("phone_num").
+		Having("phone_num > ?", 100).All()
+}
+
+//事务处理
+//Transaction方式处理事务,可以集中处理多个独立数据处理方法，保持事务一致性，当出现异常时则回滚，不出异常则提交事务
+func TestTransaction(t *testing.T) {
+	err := g.DB().Transaction(func(tx *gdb.TX) error {
+		addGroup(nil)
+		addPhone(tx)
+		panic("报个错") //出现异常时将回滚
+		//return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+//tx链式操作
+func TestTxLink(t *testing.T) {
+	tx, err := g.DB().Begin()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+	_, err = addPhone(tx)
+	_, err = addGroup(tx)
+}
+
+//新增组
+func addGroup(tx *gdb.TX) (id int64, err error) {
+	var model *gdb.Model
+	if tx == nil {
+		model = g.DB().Model("t_group")
+	} else {
+		model = tx.Model("t_group")
+	}
+	group := &Group{
+		Name: "一组",
+
+		CreatedAt: gtime.Now(),
+	}
+	res, err := model.Insert(group)
+	if err != nil {
+		fmt.Println(err)
+		return -1, err
+	}
+	return res.LastInsertId()
+}
+
+//新增电话机
+func addPhone(tx *gdb.TX) (id int64, err error) {
+	var model *gdb.Model
+	if tx == nil {
+		//事务对象为空，方法内独立事务管理
+		model = g.DB().Model("t_phone")
+	} else {
+		//事务对象由外部传入，由外部管理
+		model = tx.Model("t_phone")
+	}
+	phone := &Phone{
+		Name:      "话机22",
+		IpAddress: "localhost",
+		PhoneNum:  "10086",
+		Password:  "709394",
+		CreatedAt: gtime.Now(),
+		DeletedAt: gtime.Now(),
+		GId:       1,
+	}
+	res, err := model.Insert(phone)
+	if err != nil {
+		fmt.Println(err)
+		return -1, err
+	}
+	return res.LastInsertId()
+}
+
+//时间更新,针对结构体不生效，只针对map参数传入有效
+/*
+表中设置三个字段：
+字段名            字段类型                        字段说明
+Updated_at	  date, datetime, timestamp		   修改时间，每次数据被修改时自动更新时间
+Created_at	  date, datetime, timestamp		   创建时间，数据插入时写入时间，只会写入一次
+Deleted_at	  date, datetime, timestamp		   删除时间，数据被删除时写入时间，实则为逻辑删除，查询的时候将会自带Deleted_at is not null语句
+*/
+func TestTimeChange(t *testing.T) {
+
+	res, err := g.DB().Model("t_group").Insert(&Group{
+		Name: "二组",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		fmt.Println(err)
+	}
+	g.DB().Model("t_group").Save(&Group{Id: id, Name: "三组"})
+	g.DB().Model("t_group").Delete("id =?", id)
+}
+
+//查询结果处理
+func TestResult(t *testing.T) {
+
+	one, err := g.DB().Model("t_group").WherePri(1).One()
+	fmt.Println(one)
+	all, err := g.DB().Model("t_group").Where("id in (?)", g.Slice{1, 2, 3, 4, 5}).All()
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, v := range all {
+		fmt.Println(v.GMap())
+	}
+
 }
