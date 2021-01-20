@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
 	"testing"
 )
@@ -398,7 +399,7 @@ Deleted_at	  date, datetime, timestamp		   删除时间，数据被删除时写�
 */
 func TestTimeChange(t *testing.T) {
 
-	res, err := g.DB().Model("t_group").Insert(&Group{
+	res, err := g.DB().Model("t_group").Insert(Group{
 		Name: "二组",
 	})
 	if err != nil {
@@ -408,8 +409,25 @@ func TestTimeChange(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	g.DB().Model("t_group").Save(&Group{Id: id, Name: "三组"})
+
+	g.DB().Model("t_group").Save(Group{Id: id, Name: "三组"})
 	g.DB().Model("t_group").Delete("id =?", id)
+}
+
+//测试时间更新，参数为map
+func TestTimeChangeWithMap(t *testing.T) {
+
+	res, err := g.DB().Model("t_group").Insert(g.Map{"name": "四组"})
+	if err != nil {
+		glog.Error(err)
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		glog.Error(err)
+	}
+	g.DB().Model("t_group").Save(g.Map{"name": "五组", "id": id})
+	g.DB().Model("t_group").Delete("id=?", id)
+
 }
 
 //查询结果处理
