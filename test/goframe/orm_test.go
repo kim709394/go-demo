@@ -398,7 +398,7 @@ Created_at	  date, datetime, timestamp		   创建时间，数据插入时写入�
 Deleted_at	  date, datetime, timestamp		   删除时间，数据被删除时写入时间，实则为逻辑删除，查询的时候将会自带Deleted_at is not null语句
 */
 func TestTimeChange(t *testing.T) {
-
+	//针对结构体不生效
 	res, err := g.DB().Model("t_group").Insert(Group{
 		Name: "二组",
 	})
@@ -414,7 +414,7 @@ func TestTimeChange(t *testing.T) {
 	g.DB().Model("t_group").Delete("id =?", id)
 }
 
-//测试时间更新，参数为map
+//测试时间更新，参数为map，时间更新有效
 func TestTimeChangeWithMap(t *testing.T) {
 
 	res, err := g.DB().Model("t_group").Insert(g.Map{"name": "四组"})
