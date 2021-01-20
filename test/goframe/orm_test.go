@@ -282,6 +282,7 @@ func TestQuery(t *testing.T) {
 	//count(),返回总记录数
 	g.DB().Model("t_group").WherePri(1).Count()
 
+	g.DB()
 	//查询结果转化
 	//Struct()查询结果转化为一个对象，这种方式是先初始化对象(先分配内存)，然后再将查询结果赋值给该对象
 	group := new(Group)
@@ -306,6 +307,15 @@ func TestQuery(t *testing.T) {
 	//having
 	g.DB().Model("t_phone").Fields("count(1) total,phone_num").Group("phone_num").
 		Having("phone_num > ?", 100).All()
+}
+
+//limit 分页
+func TestLimitPaging(t *testing.T) {
+	groups := ([]*Group)(nil)
+	//var groups []*Group
+	g.DB().Model("t_group").Limit(1, 2).Order("created_at desc").Structs(&groups)
+	g.Dump(groups)
+
 }
 
 //事务处理
