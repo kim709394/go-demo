@@ -154,6 +154,7 @@ type UserController struct {
 }
 
 func (u *UserController) List(r *ghttp.Request) {
+	r.GetJson()
 	r.Response.Write("listUser")
 }
 
