@@ -586,3 +586,13 @@ func Scan() {
 	}
 	fmt.Println(scan)
 }
+
+//自定义异常
+type MyError struct {
+	Code int
+	Msg  string
+}
+
+func (myErr *MyError) Error() string {
+	return string(myErr.Code) + myErr.Msg
+}

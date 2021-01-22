@@ -239,7 +239,7 @@ func TestLifeCycle(t *testing.T) {
 	//调用服务时，先调用Init()方法，后调用服务,call()方法，最后调用Shut()方法。
 	s := g.Server()
 	l := new(LifeCycle)
-	s.BindObject("/user", l)
+	s.BindObject("/user", l, "Call")
 	s.SetPort(8081)
 	s.Run()
 

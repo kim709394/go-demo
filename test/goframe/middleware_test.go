@@ -3,6 +3,7 @@ package goframe
 import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/kim709394/go-demo/hello"
 	"testing"
 )
 
@@ -43,7 +44,7 @@ func MiddlewareCors(r *ghttp.Request) {
 func AuthMiddleware(r *ghttp.Request) {
 	//配置不需要鉴权的路由url
 	anon := make([]string, 5)
-	anon = append(anon, "/goframe/goods/add")
+	anon = append(anon, "/goframe/goods/add", "/goframe/user/list")
 	for _, uri := range anon {
 		if uri == r.RequestURI {
 			r.Middleware.Next()
@@ -75,6 +76,7 @@ func GlobalError(r *ghttp.Request) {
 	//获取错误信息
 	err := r.GetError()
 	if err != nil {
+		r.Context()
 		r.Response.ClearBuffer()
 		r.Response.WriteJson(ResultVO{5001, "服务端错误", err.Error()})
 	}
@@ -154,7 +156,7 @@ type UserController struct {
 }
 
 func (u *UserController) List(r *ghttp.Request) {
-	r.GetJson()
+	panic(&hello.MyError{Code: 1, Msg: "报错"})
 	r.Response.Write("listUser")
 }
 
