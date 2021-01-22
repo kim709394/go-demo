@@ -49,8 +49,9 @@ func TestGetParam(t *testing.T) {
 			fmt.Println(err1)
 		}*/
 		//单个json对象
-		var single *Param
-		err2 := r.Parse(&single)
+		var single = &Param{}
+		//parse方法转换json对象
+		/*err2 := r.Parse(&single)
 		//服务端数据校验获取错误信息
 		if err2 != nil {
 			if v, ok := err2.(*gvalid.Error); ok {
@@ -58,6 +59,22 @@ func TestGetParam(t *testing.T) {
 			}
 			//向客户端写完json字符串后结束方法
 			res.WriteJsonExit(ResultVO{5001, err2.Error(), ""})
+		}*/
+		//getStruct方法转换json对象
+		/*传参:
+		{
+			"id":1,
+			"name":"ben",
+			"age":18,
+			"score":99
+		}*/
+		err3 := r.GetStruct(single)
+		if err3 != nil {
+			if v, ok := err3.(*gvalid.Error); ok {
+				res.WriteJsonExit(ResultVO{5001, v.FirstString(), ""})
+			}
+			//向客户端写完json字符串后结束方法
+			res.WriteJsonExit(ResultVO{5001, err3.Error(), ""})
 		}
 		//res.Write("将json字符串参数自动转化为匹配的结构体",param)
 		res.Write("单个json对象:", single)
