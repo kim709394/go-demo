@@ -5,6 +5,7 @@
     LogStdout= true               # 日志是否输出到终端。默认为true
     ErrorStack= true               # 当Server捕获到异常时是否记录堆栈信息到日志中。默认为true
     ErrorLogEnabled= true               # 是否记录异常日志信息到日志中。默认为true
+    LogLevel="all"
     #配置服务实例，服务实例没找到的配置项回去服务配置找
     [server.server1]
         "Address"=":82"

@@ -23,6 +23,7 @@ s := g.Server()
 s.Plugin(&swagger.Swagger{})
 5、项目根目录下执行gf命令；gf swagger --packed   注意如果gf-cli安装目录不和项目在同一个包下要配置环境变量
 执行过程：寻找项目根目录下的main.go文件的启动代码，然后自动识别对应的实体结构体，然后在项目根目录下生成/swagger/swagger.json文件
+6、输入地址查看swagger页面:   http://localhost:8082/swagger/
 */
 
 func TestSwagger(t *testing.T) {
