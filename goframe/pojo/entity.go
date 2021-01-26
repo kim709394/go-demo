@@ -53,6 +53,7 @@ type PersonController struct {
 //@Produce  json
 //@Param  entity body pojo.Person true "人员参数"
 //@Success 201 {object} pojo.Person "返回结果"
+//@Success 201 {integer} int64 "返回结果"
 //@Failure 5001 {object} pojo.ResultVO
 //@Header 200 {string} Token "token"
 //@Router /swagger/test/post [POST]
