@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+    <!-- include标签， 包含别的模板文件 -->
+    {{include "header.html" .}}
+    {{include .myTemp .}}    <!--获取变量"myTemp"的值获取资源文件 -->
+    <!-- 获取普通变量 -->
+    {{.val}}
+    <!--if end标签-->
+    {{if .simple}}
+        <!--获取结构体对象的各个值-->
+        {{.simple.Id}}&nbsp;{{.simple.Name}}&nbsp;{{.simple.CreatedAt}}&nbsp
+    {{end}}
+    <!--
+        比较
+        `eq`: arg1 == arg2
+        `ne`: arg1 != arg2
+        `lt`: arg1 < arg2
+        `le`: arg1 <= arg2
+        `gt`: arg1 > arg2
+        `ge`: arg1 >= arg2
+    -->
+    {{if gt .simple.Id 0}}
+        id大于0
+    {{end}}
+
+
+
+    <!-- 遍历集合 -->
+    {{range $k,$v :=.slice}}
+        <li> k : {{ $k }} , v : {{ $v }} </li>
+    {{end}}
+    {{include "footer.html" .}}
+</body>
+</html>

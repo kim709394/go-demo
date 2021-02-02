@@ -32,6 +32,12 @@ type Group struct {
 	UpdatedAt *gtime.Time //修改时间
 }
 
+func (g *Group) Hello(param string) string {
+
+	return param
+
+}
+
 //统一返回值
 type ResultVO struct {
 	Code int

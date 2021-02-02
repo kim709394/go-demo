@@ -14,3 +14,10 @@
 [database]
     link = "mysql:root:root@tcp(127.0.0.1:3306)/voip"
     debug = true    #开启调试模式，在日志中打印sql语句
+
+#静态模板配置
+[viewer]
+    Paths   = ["D:\\go\\goworks\\go-demo\\goframe\\static"]    #前端模板文件放置路径
+    DefaultFile ="index.html"         #默认解析的模板引擎文件:index.html
+    Delimiters  =  ["{{", "}}"]          # 模板引擎变量分隔符号。默认为 ["{{", "}}"]
+    AutoEncode  = false                 # 是否默认对变量内容进行XSS编码。默认为false

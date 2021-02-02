@@ -28,9 +28,15 @@ func TestHttp(t *testing.T) {
 	//静态资源渲染
 	//设置允许访问静态资源，默认是false
 	server.SetIndexFolder(true)
-	//设置静态资源路径
+	//设置静态资源路径,访问/index.html即是访问/goframe/static/index.html
 	server.SetServerRoot("/goframe/static/")
-	//
+	//静态路由重写,访问/index=访问/index.html
+	server.SetRewrite("/index", "/index.html")
+	//map方式设置多个静态路由重写
+	server.SetRewriteMap(g.MapStrStr{
+		"/index1": "/index.html",
+		"index2":  "index2.html",
+	})
 	//跑起来
 	server.Run()
 }
