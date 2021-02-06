@@ -38,7 +38,6 @@ func TestStatic(t *testing.T) {
 			"myTemp": "myTemp.html",
 		})
 	})
-
 	s.SetPort(8081)
 	s.Run()
 

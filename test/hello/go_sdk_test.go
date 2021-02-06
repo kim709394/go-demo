@@ -37,3 +37,8 @@ func TestUnSerialize(t *testing.T) {
 func TestUnSerializeMap(t *testing.T) {
 	hello.JsonUnSerializeMap()
 }
+
+//获取本机ip地址
+func TestGetIp(t *testing.T) {
+	hello.GetIp()
+}
