@@ -3,7 +3,6 @@ package goframe
 import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/kim709394/go-demo/hello"
 	"testing"
 )
 
@@ -132,7 +131,7 @@ func TestGroupMiddleware(t *testing.T) {
 				r.Response.Write("用户模块内中间件")
 				r.Middleware.Next()
 			})
-			group.ALL("/list", u, "List")
+			group.ALL("/list/:id", u, "List")
 			group.GET("/get", u, "GetUser")
 			group.DELETE("/delete", u, "DeleteUser")
 			group.PUT("/update", u, "UpdateUser")
@@ -156,7 +155,10 @@ type UserController struct {
 }
 
 func (u *UserController) List(r *ghttp.Request) {
-	panic(&hello.MyError{Code: 1, Msg: "报错"})
+	//panic(&hello.MyError{Code: 1, Msg: "报错"})
+	url := r.URL
+	g.Dump(r.Router.Uri)
+	g.Dump("url", url)
 	r.Response.Write("listUser")
 }
 

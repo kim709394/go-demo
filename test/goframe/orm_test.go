@@ -224,11 +224,11 @@ func TestUpdate(t *testing.T) {
 	g.DB().Model("t_group").Insert(g.Map{"name": "井下", "deleted_at": gtime.Now(), "created_at": gdb.Raw("now()")})
 	//Counter对象用法，用于给字段修改为自增
 	counter := &gdb.Counter{
-		Field: "id",
+		Field: "del",
 		Value: 1,
 	}
 	// update t_group set del=del+1 where id=1
-	g.DB().Model("t_group").Data(g.Map{"id": counter}).Where("id=?", 1).Update()
+	g.DB().Model("t_group").Data(g.Map{"del": counter}).Where("id=?", 1).Update()
 }
 
 //删除
