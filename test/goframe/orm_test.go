@@ -6,6 +6,8 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
+	"github.com/kim709394/go-demo/goframe/pojo"
 	"testing"
 )
 
@@ -452,5 +454,43 @@ func TestResult(t *testing.T) {
 	for _, v := range all {
 		fmt.Println(v.GMap())
 	}
+
+}
+
+//查询结果为空的测试用例
+func TestNullResult(t *testing.T) {
+
+	array, err := g.DB().Model("t_group").Where("id > 30").Fields("id").Array()
+	//查询为空不报错
+	if err != nil {
+		g.Dump(err.Error())
+	}
+	//查询无记录则数组为空
+	if array == nil || len(array) == 0 {
+		g.Dump(array)
+	}
+	s := gconv.Int64s(array)
+	g.Dump("输出结果:", s)
+}
+
+//查询记录为空
+func TestNullRecord(t *testing.T) {
+	group := new(pojo.Group)
+	err := g.DB().Model("t_group").Where("id > 30").Struct(group)
+	//查询无记录则会报错
+	g.Dump("sql: no rows in result set" == err.Error())
+	if err != nil {
+		g.Dump("报错了:", err.Error())
+	}
+	g.Dump(group)
+}
+
+//查询记录为空时得出的count值
+func TestNullCount(t *testing.T) {
+	count, err := g.DB().Model("t_group").Where("id > 30").Count()
+	if err != nil {
+		g.Dump("err : ", err.Error())
+	}
+	g.Dump(count)
 
 }
