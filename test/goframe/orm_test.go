@@ -6,6 +6,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/kim709394/go-demo/goframe/pojo"
 	"testing"
 )
 
@@ -452,5 +453,16 @@ func TestResult(t *testing.T) {
 	for _, v := range all {
 		fmt.Println(v.GMap())
 	}
+
+}
+
+//测试查询条件where和and
+func TestWhereAnd(t *testing.T) {
+	group := new(pojo.Group)
+	err := g.DB().Model("t_group").Where("id = 10").Where("name='五组' ").Struct(group)
+	if err != nil {
+		g.Dump(err.Error())
+	}
+	g.Dump(group)
 
 }
