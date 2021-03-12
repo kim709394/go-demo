@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/kim709394/go-demo/goframe/pojo"
+	"github.com/kim709394/go-demo/hello"
 	"testing"
 )
 
@@ -208,7 +209,7 @@ func TestInsert(t *testing.T) {
 }
 
 //修改方法
-func TestUpdate(t *testing.T) {
+func TestSave(t *testing.T) {
 	//个性化修改
 	//g.DB().Model("t_phone").Data(g.Map{"name": "709394"}).Where("id=?", 1).Update()
 	phone := new(Phone)
@@ -232,9 +233,18 @@ func TestUpdate(t *testing.T) {
 	g.DB().Model("t_group").Data(g.Map{"del": counter}).Where("id=?", 1).Update()
 }
 
-//删除
+//另一种修改方法
+func TestUpdate(t *testing.T) {
+	group := Group{CreatedAt: gtime.Now()}
+	m := hello.IgnoreStructNull(group)
+	g.Dump(m)
+	g.DB().Model("t_group").Data(m).WherePri(20).Update()
+
+}
+
+//逻辑删除
 func TestDel(t *testing.T) {
-	//delete from t_phone where id=5
+	//update t_phone set delete_at is now() where id = 5
 	g.DB().Model("t_phone").Delete(g.Map{"id": 5})
 
 }

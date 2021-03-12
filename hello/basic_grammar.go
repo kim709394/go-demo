@@ -77,6 +77,51 @@ func VariableInit() {
 
 }
 
+//各基本数据类型的初始值
+func GetBasicInitValue() {
+	var (
+		bool1       bool
+		string1     string
+		int1        int
+		int81       int8
+		int161      int16
+		int321      int32
+		int641      int64
+		uint1       uint
+		uint81      uint8
+		uint161     uint16
+		uint321     uint32
+		uint641     uint64
+		uintptr1    uintptr
+		byte1       byte
+		rune1       rune // int32 的别名 代表一个 Unicode 码
+		float321    float32
+		float641    float64
+		complex641  complex64
+		complex1281 complex128
+	)
+	fmt.Println("bool:", bool1)
+	fmt.Println("string:", string1)
+	fmt.Println("int:", int1)
+	fmt.Println("int8:", int81)
+	fmt.Println("int16:", int161)
+	fmt.Println("int32:", int321)
+	fmt.Println("int64:", int641)
+	fmt.Println("uint8:", uint81)
+	fmt.Println("uint:", uint1)
+	fmt.Println("uint16:", uint161)
+	fmt.Println("uint32:", uint321)
+	fmt.Println("uint64:", uint641)
+	fmt.Println("uintptr:", uintptr1)
+	fmt.Println("rune1:", rune1)
+	fmt.Println("byte:", byte1)
+	fmt.Println("float32:", float321)
+	fmt.Println("float64:", float641)
+	fmt.Println("complex64:", complex641)
+	fmt.Println("complex128:", complex1281)
+
+}
+
 func Complex() {
 	fmt.Println("--------------------复数-------------------------")
 	//复数
