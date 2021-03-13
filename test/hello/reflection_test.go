@@ -1,6 +1,7 @@
 package hello
 
 import (
+	"fmt"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/kim709394/go-demo/hello"
 	"testing"
@@ -30,7 +31,8 @@ func TestGetTag(t *testing.T) {
 //排除空字段值
 func TestIgnoreNull(t *testing.T) {
 	myDog := hello.Dog{"旺财", 2, 'y', gtime.Now(), hello.MyStu{1, 2}}
-	hello.IgnoreStructNull(myDog)
+	m := hello.IgnoreStructNull(myDog)
+	fmt.Println(m)
 }
 
 //基本类型初始值

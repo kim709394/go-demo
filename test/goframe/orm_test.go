@@ -6,8 +6,9 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/kim709394/go-demo/goframe/pojo"
-	"github.com/kim709394/go-demo/hello"
+	"reflect"
 	"testing"
 )
 
@@ -235,10 +236,30 @@ func TestSave(t *testing.T) {
 
 //另一种修改方法
 func TestUpdate(t *testing.T) {
-	group := Group{CreatedAt: gtime.Now()}
-	m := hello.IgnoreStructNull(group)
+	group := Group{CreatedAt: gtime.Now(), Id: 20}
+	m := make(map[string]interface{})
+	IgnoreStructNull(group, m)
 	g.Dump(m)
 	g.DB().Model("t_group").Data(m).WherePri(20).Update()
+
+}
+
+func IgnoreStructNull(i interface{}, m map[string]interface{}) {
+	tempMap := gconv.Map(i, gconv.StructTagPriority...)
+	for k, v := range tempMap {
+		typeOf := reflect.TypeOf(v)
+		valueOf := reflect.ValueOf(v)
+		kind := typeOf.Kind()
+		if kind == reflect.Struct {
+			IgnoreStructNull(v, m)
+		} else if kind == reflect.Ptr {
+			if !valueOf.IsNil() {
+				m[k] = v
+			}
+		} else {
+			m[k] = v
+		}
+	}
 
 }
 
