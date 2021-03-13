@@ -6,8 +6,8 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/util/gconv"
 	"github.com/kim709394/go-demo/goframe/pojo"
+	"github.com/kim709394/go-demo/hello"
 	"testing"
 )
 
@@ -209,7 +209,7 @@ func TestInsert(t *testing.T) {
 }
 
 //修改方法
-func TestUpdate(t *testing.T) {
+func TestSave(t *testing.T) {
 	//个性化修改
 	//g.DB().Model("t_phone").Data(g.Map{"name": "709394"}).Where("id=?", 1).Update()
 	phone := new(Phone)
@@ -233,9 +233,18 @@ func TestUpdate(t *testing.T) {
 	g.DB().Model("t_group").Data(g.Map{"del": counter}).Where("id=?", 1).Update()
 }
 
-//删除
+//另一种修改方法
+func TestUpdate(t *testing.T) {
+	group := Group{CreatedAt: gtime.Now()}
+	m := hello.IgnoreStructNull(group)
+	g.Dump(m)
+	g.DB().Model("t_group").Data(m).WherePri(20).Update()
+
+}
+
+//逻辑删除
 func TestDel(t *testing.T) {
-	//delete from t_phone where id=5
+	//update t_phone set delete_at is now() where id = 5
 	g.DB().Model("t_phone").Delete(g.Map{"id": 5})
 
 }
@@ -457,40 +466,13 @@ func TestResult(t *testing.T) {
 
 }
 
-//查询结果为空的测试用例
-func TestNullResult(t *testing.T) {
-
-	array, err := g.DB().Model("t_group").Where("id > 30").Fields("id").Array()
-	//查询为空不报错
+//测试查询条件where和and
+func TestWhereAnd(t *testing.T) {
+	group := new(pojo.Group)
+	err := g.DB().Model("t_group").Where("id = 10").Where("name='五组' ").Struct(group)
 	if err != nil {
 		g.Dump(err.Error())
 	}
-	//查询无记录则数组为空
-	if array == nil || len(array) == 0 {
-		g.Dump(array)
-	}
-	s := gconv.Int64s(array)
-	g.Dump("输出结果:", s)
-}
-
-//查询记录为空
-func TestNullRecord(t *testing.T) {
-	group := new(pojo.Group)
-	err := g.DB().Model("t_group").Where("id > 30").Struct(group)
-	//查询无记录则会报错
-	g.Dump("sql: no rows in result set" == err.Error())
-	if err != nil {
-		g.Dump("报错了:", err.Error())
-	}
 	g.Dump(group)
-}
-
-//查询记录为空时得出的count值
-func TestNullCount(t *testing.T) {
-	count, err := g.DB().Model("t_group").Where("id > 30").Count()
-	if err != nil {
-		g.Dump("err : ", err.Error())
-	}
-	g.Dump(count)
 
 }
