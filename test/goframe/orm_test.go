@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/kim709394/go-demo/goframe/pojo"
+	"github.com/kim709394/go-demo/hello"
 	"reflect"
 	"testing"
 )
@@ -236,6 +237,10 @@ func TestSave(t *testing.T) {
 
 //另一种修改方法
 func TestUpdate(t *testing.T) {
+	myDog := hello.Dog{"旺财", 2, 'y', gtime.Now(), hello.MyStu{1, 2}}
+	m2 := make(map[string]interface{})
+	IgnoreStructNull(myDog, m2)
+	g.Dump(m2)
 	group := Group{CreatedAt: gtime.Now(), Id: 20}
 	m := make(map[string]interface{})
 	IgnoreStructNull(group, m)
