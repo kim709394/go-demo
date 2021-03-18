@@ -123,3 +123,8 @@ func TestScan(t *testing.T) {
 func TestSyncMap(t *testing.T) {
 	hello.DeleteSyncMap()
 }
+
+//测试定义函数
+func TestDefinedFunc(t *testing.T) {
+	hello.DefinedFunc()
+}

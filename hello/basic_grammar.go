@@ -8,6 +8,7 @@ package hello
 import (
 	"container/list"
 	"fmt"
+	"github.com/gogf/gf/util/gconv"
 	"math"
 	"sync"
 	"unicode/utf8"
@@ -640,4 +641,17 @@ type MyError struct {
 
 func (myErr *MyError) Error() string {
 	return string(myErr.Code) + myErr.Msg
+}
+
+//定义函数类型
+func DefinedFunc() {
+	var f func(a int64) string
+	f = func(a int64) string {
+		return gconv.String(a)
+	}
+	fmt.Println(f(1))
+}
+
+var f func(a int64) string = func(a int64) string {
+	return gconv.String(a)
 }
