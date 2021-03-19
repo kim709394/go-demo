@@ -125,6 +125,7 @@ func TestFileUpload(t *testing.T) {
 	s := g.Server()
 	s.BindHandler("/upload", func(r *ghttp.Request) {
 		file := r.GetUploadFile("file")
+		file.Filename = "123.jpg"
 		file.Save("../../file/")
 		f, err := file.Open()
 		defer f.Close()
