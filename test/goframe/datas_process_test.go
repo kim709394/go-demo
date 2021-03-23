@@ -20,6 +20,10 @@ func TestSubStr(t *testing.T) {
 	//截取从输入下标为起始到最后的字符串，最后一个参数如果没有就是截取到最后，如果有就是截取长度，包前也包后
 	str := gstr.SubStr(s, strings.LastIndex(s, ".")+1)
 	g.Dump(str)
+	s = "1"
+	str = gstr.SubStr(s, 0, len(s)-1)
+	g.Dump(str)
+
 }
 
 //整数转化为浮点型数
@@ -33,4 +37,11 @@ func TestIntToFloat(t *testing.T) {
 	//四舍五入保留三位小数
 	value, _ = strconv.ParseFloat(fmt.Sprintf("%.3f", 9.8345), 64)
 	g.Dump(value)
+}
+
+//字符串分割
+func TestSplit(t *testing.T) {
+	s := "1,2,3,4,5,6,7"
+	array := gstr.Split(s, ",")
+	g.Dump(array)
 }
