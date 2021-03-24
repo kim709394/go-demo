@@ -52,6 +52,15 @@ func Strs() {
 	fmt.Println(str)
 }
 
+//占位符拼接
+func Sprintf() {
+
+	sprintf := fmt.Sprintf("%s %s", "hello", "hi")
+	fmt.Println(sprintf)
+	join := strings.Join([]string{"hello", "hi"}, " ")
+	fmt.Println(join)
+}
+
 type myJson struct {
 	Name   string   `json:"name"` //``里面的相当于转义字符串""双引号的字符串类型，添加结构体变迁指定序列化后的json的key值
 	Age    int      `json:"age"`  // `json:"-"` 这样则该字段不会被序列化和反序列化

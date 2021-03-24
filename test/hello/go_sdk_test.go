@@ -42,3 +42,8 @@ func TestUnSerializeMap(t *testing.T) {
 func TestGetIp(t *testing.T) {
 	hello.GetIp()
 }
+
+//测试字符串占位符拼接
+func TestSprintf(t *testing.T) {
+	hello.Sprintf()
+}
