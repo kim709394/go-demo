@@ -36,6 +36,7 @@ func MiddlewareCors(r *ghttp.Request) {
 		r.Middleware.Next()
 
 	*/
+	g.Dump(r.RequestURI)
 	r.Middleware.Next()
 }
 
@@ -115,7 +116,7 @@ func TestGroupMiddleware(t *testing.T) {
 	//跨域中间件
 	s.Use(MiddlewareCors)
 	//鉴权中间件
-	s.Use(AuthMiddleware)
+	//s.Use(AuthMiddleware)
 	//错误处理器
 	s.Use(GlobalError)
 	//实例化控制器
@@ -154,10 +155,14 @@ func TestGroupMiddleware(t *testing.T) {
 type UserController struct {
 }
 
+//获取请求url
 func (u *UserController) List(r *ghttp.Request) {
 	//panic(&hello.MyError{Code: 1, Msg: "报错"})
+	//在中间件无法获取原生uri
 	url := r.URL
+	//获取原始url:/goframe/user/list/:id
 	g.Dump(r.Router.Uri)
+	//获取实际url:"/goframe/user/list/1"
 	g.Dump("url", url)
 	r.Response.Write("listUser")
 }
