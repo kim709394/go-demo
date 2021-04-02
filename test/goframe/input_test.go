@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/util/gvalid"
 	"testing"
 )
@@ -164,4 +165,20 @@ func TestMultiFilesUpload(t *testing.T) {
 	s.SetPort(8081)
 	s.Run()
 
+}
+
+//文件下载
+func TestDownload(t *testing.T) {
+
+	s := g.Server()
+	s.BindHandler("/download", func(r *ghttp.Request) {
+		res := r.Response
+		res.Header().Set("Content-Disposition", "attachment;filename=a.jpg")
+		res.Header().Set("Content-Type", "image/x-icon")
+
+		res.Writer.Write(gfile.GetBytes("D:/wantai/attachment/favicon.ico"))
+		res.Writer.Flush()
+	})
+	s.SetPort(8081)
+	s.Run()
 }

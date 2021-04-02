@@ -5,6 +5,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
+	"github.com/google/uuid"
 	"strconv"
 	"strings"
 	"testing"
@@ -44,4 +45,13 @@ func TestSplit(t *testing.T) {
 	s := "1,2,3,4,5,6,7"
 	array := gstr.Split(s, ",")
 	g.Dump(array)
+}
+
+//uuid
+func TestUUID(t *testing.T) {
+
+	uuid := uuid.New().String()
+	g.Dump(uuid)
+	replace := gstr.Replace(uuid, "-", "")
+	g.Dump(replace)
 }
