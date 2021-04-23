@@ -16,7 +16,7 @@ func TestInbound(t *testing.T) {
 	freeswitchcli.InboundClient()
 }
 
-//发送事件监听
+//订阅事件监听
 func TestSendEvents(t *testing.T) {
 	freeswitchcli.SendEvents()
 }
@@ -24,4 +24,12 @@ func TestSendEvents(t *testing.T) {
 //执行命令
 func TestExecuteCommand(t *testing.T) {
 	freeswitchcli.ExecuteCommand()
+}
+
+//接收控制台消息
+func TestReceive(t *testing.T) {
+	freeswitchcli.InboundClient()
+
+	freeswitchcli.Receive()
+
 }

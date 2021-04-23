@@ -13,48 +13,62 @@ import (
 */
 
 var (
-	fshost   = flag.String("fshost", "localhost", "Freeswitch hostname. Default: localhost")
-	fsport   = flag.Uint("fsport", 8021, "Freeswitch port. Default: 8021")
+	//设置ip
+	fshost = flag.String("fshost", "localhost", "Freeswitch hostname. Default: localhost")
+	//设置端口号 默认是8021
+	fsport = flag.Uint("fsport", 8021, "Freeswitch port. Default: 8021")
+	//设置密码  默认是 ClueCon
 	password = flag.String("pass", "ClueCon", "Freeswitch password. Default: ClueCon")
-	timeout  = flag.Int("timeout", 10, "Freeswitch conneciton timeout in seconds. Default: 10")
+	//设置连接超时时间
+	timeout = flag.Int("timeout", 10, "Freeswitch conneciton timeout in seconds. Default: 10")
+
+	cli *goesl.Client
 )
 
-func InboundClient() (cli *goesl.Client, err error) {
+//连接freeswitch服务器
+func InboundClient() error {
 
 	client, err := goesl.NewClient(*fshost, *fsport, *password, *timeout)
 
 	if err != nil {
 		fmt.Println("连接异常:", err)
-		return nil, err
+		return err
 	}
 	go client.Handle()
-	return client, nil
+	cli = client
+	return nil
 }
 
+//订阅事件
 func SendEvents() {
-	client, err := InboundClient()
+	InboundClient()
+	err := cli.Send("events json CHANNEL_CREATE CHANNEL_ANWSER HEARTBEAT")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("send err:", err)
 	}
-	err2 := client.Send("events json CHANNEL_CREATE CHANNEL_ANWSER HEARTBEAT")
-	if err != nil {
-		fmt.Println("send err:", err2)
+	/*b := make([]byte, 1024*1024)
+	//读取客户端发过来的消息
+	read, err2 := cli.SocketConnection.Conn.Read(b)
+	acceptMsg := string(b[:read])
+	if err2 != nil {
+		fmt.Println("read err:", err2)
 	}
-	Receive(client)
+	fmt.Println(acceptMsg)*/
+	Receive()
 }
 
+//执行命令
 func ExecuteCommand() {
-	client, err := InboundClient()
-	if err != nil {
-		fmt.Println(err)
-	}
-	client.Api("sofia status profile internal reg")
-	Receive(client)
+	InboundClient()
+
+	cli.Api("sofia status profile internal reg")
+	Receive()
 }
 
-func Receive(client *goesl.Client) {
+//接收控制台消息
+func Receive() {
 	for {
-		message, err3 := client.ReadMessage()
+		message, err3 := cli.ReadMessage()
 		if err3 != nil {
 			fmt.Println(err3)
 		}
