@@ -58,11 +58,19 @@ func SendEvents() {
 }
 
 //执行命令
-func ExecuteCommand() {
+func ExecuteCommand(cmd string) {
 	InboundClient()
 
-	cli.Api("sofia status profile internal reg")
-	Receive()
+	cli.Api(cmd)
+	b := make([]byte, 1024*1024)
+	//读取客户端发过来的消息
+	read, err2 := cli.SocketConnection.Conn.Read(b)
+	acceptMsg := string(b[:read])
+	if err2 != nil {
+		fmt.Println("read err:", err2)
+	}
+	fmt.Println("返回消息:", acceptMsg)
+	//Receive()
 }
 
 //接收控制台消息

@@ -23,7 +23,9 @@ func TestSendEvents(t *testing.T) {
 
 //执行命令
 func TestExecuteCommand(t *testing.T) {
-	freeswitchcli.ExecuteCommand()
+	//cmd := "sofia status profile internal reg"
+	cmd := "show modules mod_portaudio1"
+	freeswitchcli.ExecuteCommand(cmd)
 }
 
 //接收控制台消息
