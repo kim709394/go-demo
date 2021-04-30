@@ -41,8 +41,8 @@ func InboundClient() error {
 
 //订阅事件
 func SendEvents() {
-	InboundClient()
-	err := cli.Send("events json CHANNEL_CREATE CHANNEL_ANWSER HEARTBEAT")
+	//InboundClient()
+	err := cli.Send("events json CHANNEL_CREATE channel_hangup_complete CHANNEL_ANWSER custom portaudio::ringing")
 	if err != nil {
 		fmt.Println("send err:", err)
 	}
@@ -54,22 +54,23 @@ func SendEvents() {
 		fmt.Println("read err:", err2)
 	}
 	fmt.Println(acceptMsg)*/
-	Receive()
+	//Receive()
 }
 
 //执行命令
 func ExecuteCommand(cmd string) {
-	InboundClient()
+	//InboundClient()
 
 	cli.Api(cmd)
-	b := make([]byte, 1024*1024)
+	//b := make([]byte, 1024*1024)
 	//读取客户端发过来的消息
-	read, err2 := cli.SocketConnection.Conn.Read(b)
+	/*read, err2 := cli.Read(b)
 	acceptMsg := string(b[:read])
 	if err2 != nil {
 		fmt.Println("read err:", err2)
 	}
-	fmt.Println("返回消息:", acceptMsg)
+	fmt.Println("返回消息:", acceptMsg)*/
+
 	//Receive()
 }
 
@@ -80,6 +81,7 @@ func Receive() {
 		if err3 != nil {
 			fmt.Println(err3)
 		}
-		fmt.Println(string(message.Body))
+
+		fmt.Println("接收消息:", message.GetHeader("Event-Name"))
 	}
 }
