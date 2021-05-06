@@ -41,7 +41,7 @@ func TestReceive(t *testing.T) {
 	}()
 	freeswitchcli.SendEvents()
 	select {
-	case <-time.After(10 * time.Second):
+	case <-time.After(10000 * time.Second):
 		//freeswitchcli.ExecuteCommand("show channels")
 	}
 
